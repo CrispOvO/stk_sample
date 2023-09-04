@@ -2,7 +2,6 @@ import time
 from comtypes.client import *
 from comtypes.gen import STKObjects
 
-
 # 对象名称
 SN1 = "scenario_1"
 SaN1 = "satellite_1"
@@ -50,6 +49,9 @@ satellite = scenario.Children.New(STKObjects.eSatellite, SaN1)
 # 3、将对象映射为AgXXX对象，AgXXX对象同时包含IAgXXX和STKObjects的接口，但是最初AgXXX对象存在一些bug
 satelliteI = satellite.QueryInterface(STKObjects.IAgSatellite)
 
+# 打印支持的轨道预报模型
+print(satelliteI.PropagatorSupportedTypes)
+
 # 设置卫星轨道
 # 轨道类型为7，表示卫星的轨道预报模型为双星模型，此时地球视为一个质点
 print("propagator type: " + str(satelliteI.Propagator))
@@ -59,15 +61,37 @@ propagator = satelliteI.Propagator
 # 明确了卫星轨道模型后，将轨道转化为双星模型
 proTwoBodyI = propagator.QueryInterface(STKObjects.IAgVePropagatorTwoBody)
 
-# 设置轨道的六根数为：
-# 半长轴 8000 km
-# 离心率 0 -- 圆
-# 轨道倾角 60
-# 近心点辐角 0
-# 升交点经度 0
-# 真近点角 0
+# 更新卫星的时间段
+epoch = "17 Sep 2018 00:00:00.000"
+proTwoBodyI.InitialState.Epoch = epoch
+
+# 使用ICRF坐标系中的经典轨道元素分配卫星的轨道状态,设置轨道的六根数为:
+# 半长轴sma 8000 km 离心率e 0 轨道倾角i 60 近心点辐角aop 0 升交点经度raan 0 真近点角ma 0
 proTwoBodyI.InitialState.Representation.AssignClassical(3, 8000, 0, 60, 0, 0, 0)
 
+# 在UI界面中画出卫星的轨迹
 proTwoBodyI.Propagate()
 
-# 创建成功，日期 2023/9/3
+# 下面使用connect命令创建另一个卫星ConnectSat
+cmd = "New / */Satellite ConnectSat"
+
+if scenario.Children.Contains(STKObjects.eSatellite, "ConnectSat"):
+    scenario.Children.Item("ConnectSat").Unload()
+    
+stkRoot.ExecuteCommand(cmd)
+
+# 使用命令完善卫星的信息
+cmd = (
+    'SetState */Satellite/ConnectSat Classical TwoBody "{}" "{}" 60 ICRF "{}" 7000000.0 0.01 90 270 0 10'.format(scenarioI.StartTime, scenarioI.StopTime, scenarioI.StartTime)
+)
+stkRoot.ExecuteCommand(cmd)
+
+# 通过路径获取对象
+sat2 = stkRoot.GetObjectFromPath("*/Satellite/ConnectSat")
+sat2I = sat2.QueryInterface(STKObjects.IAgSatellite)
+
+# 改变卫星的颜色
+basicAtt = sat2I.Graphics.Attributes.QueryInterface(STKObjects.IAgVeGfxAttributesBasic)
+
+# RGB十六进制转为十进制
+basicAtt.Color = 16777215

@@ -67,5 +67,3 @@ for num in range(18):
     proTwoBodyI.InitialState.Representation.AssignClassical(3, 8000, 0, num*10, 0, 0, 0)
 
     proTwoBodyI.Propagate()
-
-# 2023/9/3

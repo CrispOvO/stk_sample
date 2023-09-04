@@ -56,4 +56,3 @@ facilityI.UseTerrain = False
 # 定义方向-仰角遮罩 (Azimuth-elevation mask) 以便使用该遮罩作为计算接入 (Access) 时的约束。
 facilityI.SetAzElMask(1,0) # eTerrainData 
 
-# 创建成功，日期 2023/9/3
