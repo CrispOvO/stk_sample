@@ -50,7 +50,7 @@ satellite = scenario.Children.New(STKObjects.eSatellite, SaN1)
 satelliteI = satellite.QueryInterface(STKObjects.IAgSatellite)
 
 # 打印支持的轨道预报模型
-print("\n"+satelliteI.PropagatorSupportedTypes + "\n")
+print("\n"+str(satelliteI.PropagatorSupportedTypes) + "\n")
 
 # 设置卫星轨道
 # 轨道类型为7，表示卫星的轨道预报模型为双星模型，此时地球视为一个质点
