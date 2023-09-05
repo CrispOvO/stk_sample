@@ -50,7 +50,7 @@ satellite = scenario.Children.New(STKObjects.eSatellite, SaN1)
 satelliteI = satellite.QueryInterface(STKObjects.IAgSatellite)
 
 # 打印支持的轨道预报模型
-print(satelliteI.PropagatorSupportedTypes)
+print("\n"+satelliteI.PropagatorSupportedTypes + "\n")
 
 # 设置卫星轨道
 # 轨道类型为7，表示卫星的轨道预报模型为双星模型，此时地球视为一个质点
@@ -82,7 +82,7 @@ stkRoot.ExecuteCommand(cmd)
 
 # 使用命令完善卫星的信息
 cmd = (
-    'SetState */Satellite/ConnectSat Classical TwoBody "{}" "{}" 60 ICRF "{}" 7000000.0 0.01 90 270 0 10'.format(scenarioI.StartTime, scenarioI.StopTime, scenarioI.StartTime)
+    'SetState */Satellite/ConnectSat Classical TwoBody "{}" "{}" 90 ICRF "{}" 7000000.0 0.01 90 270 0 10'.format(scenarioI.StartTime, scenarioI.StopTime, scenarioI.StartTime)
 )
 stkRoot.ExecuteCommand(cmd)
 
