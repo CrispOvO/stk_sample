@@ -4,10 +4,9 @@ from comtypes.gen import STKObjects
 
 
 # 对象名称
-SN1 = "scenario_name_1"
-SaN1 = "satellite_name_1"
-FN1 = "facility_name_1"
-Target_facility_name = "Facility1"
+SN1 = "scenario_1"
+FN1 = "facility_1"
+SaN1 = "satellite_1"
 
 # 使用已经打开的STK场景，会节省创建的时间
 Read_Scenario = True
