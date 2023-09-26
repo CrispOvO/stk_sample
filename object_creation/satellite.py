@@ -58,7 +58,7 @@ print("propagator type: " + str(satelliteI.Propagator))
 
 propagator = satelliteI.Propagator
 
-# 明确了卫星轨道模型后，将轨道转化为双星模型
+# 明确了卫星轨道模型后，将轨道明确为双星模型的轨道
 proTwoBodyI = propagator.QueryInterface(STKObjects.IAgVePropagatorTwoBody)
 
 # 更新卫星的时间段
@@ -72,6 +72,7 @@ proTwoBodyI.InitialState.Representation.AssignClassical(3, 8000, 0, 60, 0, 0, 0)
 # 在UI界面中画出卫星的轨迹
 proTwoBodyI.Propagate()
 
+'''
 # 下面使用connect命令创建另一个卫星ConnectSat
 cmd = "New / */Satellite ConnectSat"
 
@@ -95,3 +96,4 @@ basicAtt = sat2I.Graphics.Attributes.QueryInterface(STKObjects.IAgVeGfxAttribute
 
 # RGB十六进制转为十进制
 basicAtt.Color = 16777215
+'''
