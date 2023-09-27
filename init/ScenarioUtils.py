@@ -18,14 +18,15 @@ class Scenario:
 
         # 设置窗口的位置和大小
         uiApplication.Top = 0
-        uiApplication.Left = 0
+        uiApplication.Left = int(GetSystemMetrics(0)/2)
         uiApplication.Width = int(GetSystemMetrics(0)/2)
-        uiApplication.Height = int(GetSystemMetrics(1) - 30)
+        uiApplication.Height = int(GetSystemMetrics(1) - 50)
 
         # 获取 IAgStkObjectRoot 接口
         self.stkRoot = uiApplication.Personality2
 
-    def createScenario(self, scName: str):
+    # 获取场景，可以是当前的，也可以是重新创建的
+    def getScenario(self, scName: str = "tempScName") -> STKObjects.IAgScenario:
         startTime = time.time()
         if not self.readScenario:
             # 创建场景
@@ -33,8 +34,8 @@ class Scenario:
 
         # 获取当前场景
         sc = self.stkRoot.CurrentScenario
-        sc2 = self.sc.QueryInterface(STKObjects.IAgScenario)
-
+        sc2 = sc.QueryInterface(STKObjects.IAgScenario)
+        
         # 设置场景时间
         sc2.SetTimePeriod("Today", "+24")
 
@@ -42,6 +43,6 @@ class Scenario:
         self.stkRoot.Rewind()
 
         # Print time spent for scenario creation
-        print("Scenario creation using {totalTime: f} sec".format(totalTime = time.time() - startTime))
+        print("Getting scenario using {totalTime: f} sec".format(totalTime = time.time() - startTime))
         
         return sc
