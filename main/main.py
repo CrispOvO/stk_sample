@@ -1,5 +1,7 @@
-from obj.satellite import Satellite
-from init.CreateScenario import Scenario
+from obj.SatelliteUtils import Satellite
+from init.ScenarioUtils import Scenario
 
 if __name__ == '__main__':
-    sc = Scenario()
+    readScenario = True
+    sc = Scenario(readScenario)
+    print(sc)
