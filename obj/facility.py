@@ -48,7 +48,10 @@ facility = scenario.Children.New(STKObjects.eFacility, FN1)
 facilityI = facility.QueryInterface(STKObjects.IAgFacility)
 
 # 设置设备的位置 (Latitude, Longitude, Altitude)
-facilityI.Position.AssignGeodetic(0, 0, 0)
+lat = 39.0095
+lon = -76.896
+alt = 0
+facilityI.Position.AssignGeodetic(lat, lon, alt)
 
 # 不使用地形数据
 facilityI.UseTerrain = False
