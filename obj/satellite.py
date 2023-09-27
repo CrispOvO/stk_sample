@@ -12,8 +12,8 @@ class Satellite:
         if self.scenario.Children.Contains(STKObjects.eSatellite, satName):
             self.scenario.Children.Item(satName).Unload()
             
-    # 在当前场景创建卫星
-    def createSatellite(self, satName: str, propagator):
+    # 在当前场景创建卫星，传入轨道预报模型的编号，默认为7，双星模型
+    def createSatellite(self, satName: str, propagator: int = 7, ):
         sat = self.scenario.Children.New(STKObjects.eSatellite, satName)
         # 将上一步生成的对象转为IAgXXX类型，New方法返回的是STKObjects类型的对象，创建后有三种选择：
         # 1、保持该对象类型不变
