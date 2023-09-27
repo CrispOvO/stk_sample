@@ -56,7 +56,21 @@ class Satellite:
         sat = self.stkRoot.GetObjectFromPath("*/Satellite/ConnectSat")
         sat2 = sat.QueryInterface(STKObjects.IAgSatellite)
         return sat2
+    
+    # 通过卫星名字获取卫星
+    def getSatelliteByName(self, satName: str) -> STKObjects.IAgSatellite:
         
+        # 如果不存在，打印报错信息
+        if not self.scenario.Children.Contains(STKObjects.eSatellite, satName):
+            print(f"satellite {satName} does not exist.")
+            return None
+        
+        sat = self.scenario.Children.Item(satName)
+        sat2 = sat.QueryInterface(STKObjects.IAgSatellite)
+
+        return sat2
+
+            
         
     # 改变卫星的颜色
     def changeColor(self, sat2: STKObjects.IAgSatellite, color: int = 16777215):
@@ -67,7 +81,7 @@ class Satellite:
 
         
     # 根据轨道6根数和轨道预报模型确认卫星轨道
-    def setOrbit(self, sat2, ele: list = [11, 7000, 0.01, 90, 270, 90, 10] ,propagatorType: int = 7):
+    def setOrbit(self, sat2: STKObjects.IAgSatellite, ele: list = [11, 7000, 0.01, 90, 270, 90, 10] ,propagatorType: int = 7):
         
         propagator = sat2.Propagator
         prop = None
