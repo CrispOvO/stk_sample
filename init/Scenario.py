@@ -4,15 +4,17 @@ from comtypes.gen import STKObjects
 from win32api import GetSystemMetrics
 
 class Scenario:
+
     # 如果使用已经打开的STK场景，会节省创建的时间
-    def __init__(self, readScenario: bool = False) -> None:
+    def __init__(self, scName: str = "tempScName", readScenario: bool = False) -> None:
         
-        self.readScenario = readScenario
+        startTime = time.time()
+        
         # 获取STK的UI界面
         if readScenario:
             uiApplication = GetActiveObject('STK11.Application')
         else:
-            uiApplication = CreateObject("STK11.Application")
+            uiApplication = CreateObject('STK11.Application')
         uiApplication.Visible = True
         uiApplication.UserControl = True
 
@@ -24,19 +26,16 @@ class Scenario:
 
         # 获取 IAgStkObjectRoot 接口
         self.stkRoot = uiApplication.Personality2
-
-    # 获取场景，可以是当前的，也可以是重新创建的
-    def getScenario(self, scName: str = "tempScName") -> STKObjects.IAgScenario:
-        startTime = time.time()
-        if not self.readScenario:
+        
+        if not readScenario:
             # 创建场景
             self.stkRoot.newScenario(scName)
 
         # 获取当前场景
-        sc = self.stkRoot.CurrentScenario
-        sc2 = sc.QueryInterface(STKObjects.IAgScenario)
+        self.sc = self.stkRoot.CurrentScenario
         
         # 设置场景时间
+        sc2 = self.sc.QueryInterface(STKObjects.IAgScenario)
         sc2.SetTimePeriod("Today", "+24")
 
         # 将场景回溯到开始时间
@@ -45,4 +44,12 @@ class Scenario:
         # Print time spent for scenario creation
         print("Getting scenario using {totalTime: f} sec".format(totalTime = time.time() - startTime))
         
-        return sc
+        
+    # 获取场景，可以是当前的，也可以是重新创建的
+    def getScenario(self) -> STKObjects:
+        return self.sc
+    
+    
+    def getScenarioI(sc) -> STKObjects.IAgScenario:
+        sc2 = sc.QueryInterface(STKObjects.IAgScenario)
+        return sc2

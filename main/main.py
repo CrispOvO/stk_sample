@@ -1,30 +1,37 @@
 import sys
 import os
-
+#! due to the path, you have to run this file at parent folder
 sys.path.append(os.path.abspath(os.curdir))
-
-from obj.SatelliteUtils import Satellite
-from init.ScenarioUtils import Scenario
-from analysis.access import Access
+from obj.Satellite import Satellite
+from init.Scenario import Scenario
+from analysis.dataprovider import DataProvider
+from misc.SaveScenario import SaveScenario
 
 if __name__ == '__main__':
     
     # sc
     readScenario = True
     scName = "myGoodSc"
-    ScenarioUtils = Scenario(readScenario)
-    sc = ScenarioUtils.getScenario()
+    scPath = os.path.abspath(os.curdir) + "/sc_data/" + scName
+    scenario = Scenario(scName, readScenario)
+    sc = scenario.getScenario()
     
-    # sat
-    sat = Satellite(sc, ScenarioUtils.stkRoot)
-    s1Name = "starlink0_0"
-    s2Name = "ConnectSat"
-    s1 = sat.getSatelliteByName(s1Name)
-    s2 = sat.getSatelliteByName(s2Name)
+    # satellite
+    sat1Name = "satellite1"
+    satellite = Satellite(sc, scenario.stkRoot)
+    # sat1 = satellite.createSatellite(sat1Name)
+    sat1 = satellite.getSatelliteByName(sat1Name)
     
-    # access
-    acc = Access()
-    acc.getAccess(sc, s1Name, s2)
+    
+    # dataprovider
+    dataprovider = DataProvider(scenario.stkRoot, sc)
+    result = dataprovider.getResult(sat1)
+    dataprovider.showResult(result)
+    dataprovider.drawResult(result, "speed")
+    
+    # save
+    save = SaveScenario(scenario.stkRoot, sc)
+    save.saveTo(scPath)
     
     
     
