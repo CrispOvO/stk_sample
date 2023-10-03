@@ -1,15 +1,20 @@
+# It's runnable now, don't forget to click stop button. 
+# creates several white parallel orbit, forming a mask above the earth, with three GEO satellites.
+
 # Import main library
 from comtypes.client import CreateObject
 
 ### Start New Instance ###
-stk = CreateObject('STK12.Application')
+stk = CreateObject('STK11.Application')
+
+stk.Visible = True
+stk.UserControl = True
 
 # Get the IAgStkObjectRoot Interface
 root = stk.Personality2
 from comtypes.gen import STKObjects
 from comtypes.gen import STKUtil
 from comtypes.gen import AgSTKVgtLib
-import math
 
 # Get the scenario object
 root.NewScenario('GEOGridExample')
@@ -58,7 +63,7 @@ sens3Pointing.Orientation.AssignAzEl(4,0,0)
 # Create initial volume grid
 earth = root.CentralBodies.Item('Earth').QueryInterface(STKObjects.IAgStkCentralBody)
 root.ExecuteCommand("SpatialTool * CentralBody/Earth Create \"Volume Grid\" GEOGrid \"Cartographic\" Latitude FixedNumberSteps Minimum -90 Maximum 90 NumSteps 20 Longitude FixedNumberSteps Minimum 0 Maximum 360 NumSteps 36 Altitude FixedNumberSteps Minimum 34000000 Maximum 37000000 NumSteps 10")
-geogrid = earth.Vgt.VolumeGrids.GetItemByName('GEOGrid')
+geogrid = earth.Vgt.VolumeGrids.Item('GEOGrid')
 
 # Create volumetric constraint
 condition = earth.Vgt.Volumes.Factory.CreateVolumeCombined('MultiSensorViz','Description here').QueryInterface(AgSTKVgtLib.IAgCrdnVolumeCombined)
@@ -87,3 +92,4 @@ volumetricObj.Compute()
 dataProvider = volumetric.DataProviders.Item('Satisfaction Volume').QueryInterface(STKObjects.IAgDataPrvTimeVar)
 data = dataProvider.Exec(scenarioObj.StartTime,scenarioObj.StopTime,60)
 array = data.DataSets.ToArray()
+print(array)

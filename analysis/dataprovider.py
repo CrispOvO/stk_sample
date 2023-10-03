@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from comtypes.client import *
 from comtypes.gen import STKObjects
 
-from init.Scenario import Scenario
+from misc.Scenario import Scenario
 
 class DataProvider:
     
@@ -37,7 +37,6 @@ class DataProvider:
     
     
     def showResult(self, result):
-
         # 使用pandas展示前五条数据信息
         dataframe = pd.DataFrame(result)
         print(dataframe.head(5))
