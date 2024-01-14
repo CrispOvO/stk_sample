@@ -4,15 +4,17 @@ import os
 sys.path.append(os.path.abspath(os.curdir))
 from obj.Satellite import Satellite
 from misc.Scenario import Scenario
-from analysis.dataprovider import DataProvider
+# from analysis.dataprovider import DataProvider
 
 if __name__ == '__main__':
     
     # sc
-    scName = "myGoodSc"
-    scPath = os.path.abspath(os.curdir) + "/sc_data/" + scName
+    # scName = "myGoodSc"
+    # scPath = os.path.abspath(os.curdir) + "/sc_data/" + scName + ".sc"
+    scName = "Square"
+    scPath = r'E:\sc\Square\Square.sc'
     scenario = Scenario()
-    scenario.loadScenario(scName, f"{scPath}.sc")
+    scenario.loadScenario(scName, scPath)
     sc = scenario.getScenario()
     
     # # satellite
@@ -29,7 +31,7 @@ if __name__ == '__main__':
     # dataprovider.drawResult(result, "speed")
     
     # save
-    scenario.saveTo(scPath)
+    # scenario.saveTo(scPath)
     
     
     
